@@ -298,6 +298,12 @@ BASE_MAP.commonMethods.checkDomById = function(id){
 		return true;
 	}
 };
+BASE_MAP.commonMethods.createFrame = function(url) {
+	var k = document.body.offsetHeight;
+	var h = k - 65;
+	var s = '<iframe id="mainframe" name="mainframe" src=' + url +' width="100%" height="' + h + '"  frameborder="0" scrolling="auto" ></iframe>';
+	return s;
+};
 BASE_MAP.commonMethods.createHtml = function(name,val){
 	var htmlStr = '';
 	htmlStr += '<span>' 
