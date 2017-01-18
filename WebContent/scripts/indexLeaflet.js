@@ -364,6 +364,15 @@ BASE_MAP.commonMethods.getWeekNumber = function(obj) {
 		return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
 	}
 };
+BASE_MAP.commonMethods.getWeekNumber2 = function(y, m, d) {
+	var time, week, checkDate = new Date(y, m-1, d);
+	checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7));
+	time = checkDate.getTime();
+	checkDate.setMonth(0);
+	checkDate.setDate(1);
+	week = Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+	return week;
+};
 //获取当前时间的日期
 BASE_MAP.commonMethods.getTodayDate = function() {
 	var now = new Date();
