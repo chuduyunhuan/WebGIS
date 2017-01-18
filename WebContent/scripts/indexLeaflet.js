@@ -330,6 +330,58 @@ BASE_MAP.commonMethods.showLoading = function(){
 BASE_MAP.commonMethods.hideLoading = function(){
 	$('#customLoading').hide();
 };
+//计算指定日期是当年的第几周
+BASE_MAP.commonMethods.getWeekNumber = function(obj) {
+	//默认参数
+	var time = new Date();
+	var y = obj.year || time.getFullYear(),
+		m = obj.month || time.getMonth() + 1,
+		d = obj.day || time.getDate();
+	//指定日期
+	var now = new Date(y, m - 1, d),
+		year = now.getFullYear(),
+		month = now.getMonth(),
+		days = now.getDate();
+	//那一天是那一年中的第多少天
+	for (var i = 0; i < month; i++) {
+		days += getMonthDays(year, i);
+	}
+	//那一年第一天是星期几
+	var yearFirstDay = new Date(year, 0, 1).getDay() || 7;
+	var week = null;
+
+	if (yearFirstDay == 1) {
+		week = Math.ceil(days / yearFirstDay);
+	} else {
+		days -= (7 - yearFirstDay + 1);
+		week = Math.ceil(days / 7) + 1;
+	}
+	return week;
+	function getMonthDays(year, month) {
+		return [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month] || (isLeapYear(year) ? 29 : 28);
+	}
+	function isLeapYear(year) {
+		return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
+	}
+};
+//获取当前时间的日期
+BASE_MAP.commonMethods.getTodayDate = function() {
+	var now = new Date();
+	var year = now.getFullYear(),
+		month = now.getMonth() + 1,
+		day = now.getDate();
+	return {
+		year: year,
+		month: month,
+		day: day
+	};
+};
+//时间格式化,x为Date类型,y为输出形式,如:'yyyy-MM-dd hh:mm:ss'
+BASE_MAP.commonMethods.timeFormat = function(x, y) {
+	var z = {M:x.getMonth()+1,d:x.getDate(),h:x.getHours(),m:x.getMinutes(),s:x.getSeconds()};
+	y = y.replace(/(M+|d+|h+|m+|s+)/g,function(v) {return ((v.length>1?"0":"")+eval('z.'+v.slice(-1))).slice(-2)});
+	return y.replace(/(y+)/g,function(v) {return x.getFullYear().toString().slice(-v.length)});
+}
 BASE_MAP.layers.setIcon = function(iconUrl,width,height){
 	width = width || 35;
 	height = height || 35;
