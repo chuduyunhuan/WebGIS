@@ -4,6 +4,30 @@
  * @date    2016-09-22 15:25:49
  * @version $Id$
  */
+ //对象数组根据某个字段分组
+ Array.prototype.groupByField = function(field) {
+ 	var map = {},
+ 	dest = [];
+ 	for (var i = 0; i < this.length; i++) {
+ 		var ai = this[i];
+ 		if (!map[ai[field]]) {
+ 			dest.push({
+ 				id: ai[field],
+ 				data: [ai]
+ 			});
+ 			map[ai[field]] = ai;
+ 		} else {
+ 			for (var j = 0; j < dest.length; j++) {
+ 				var dj = dest[j];
+ 				if (dj[field] == ai[field]) {
+ 					dj.data.push(ai);
+ 					break;
+ 				}
+ 			}
+ 		}
+ 	}
+ 	return dest;
+ };
  //判断两个对象是否相等
  Object.prototype.equals = function(x) {
  	var p;
